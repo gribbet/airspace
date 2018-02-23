@@ -2,10 +2,8 @@ import * as mapbox from "mapbox-gl";
 import Component from "wedges/lib/Component";
 
 import { airspaceService } from ".";
-import { delay } from "./common";
 
 export default class Map extends Component {
-    private maps: mapbox.Map[] = [];
     private shape: [number, number][] = [];
 
     render(element: Element) {
@@ -16,10 +14,9 @@ export default class Map extends Component {
             zoom: 10,
             pitch: 45
         });
-        this.maps.push(map);
 
         const updateAirspaces = async () => {
-            const bounds = map.getBounds();
+            const bounds = boundsWithPitch(map);
 
             const airspaces = await airspaceService.airspaces(
                 bounds.getWest(),
@@ -36,7 +33,7 @@ export default class Map extends Component {
             const source = map.getSource("shape") as mapbox.GeoJSONSource;
             const shape = this.shape.slice();
             if (this.shape.length > 0)
-                shape.concat(this.shape[0]).concat(this.shape[0]);
+                shape.concat(this.shape[0]);
             source.setData({
                 "type": "Feature",
                 "properties": {},
@@ -64,22 +61,26 @@ export default class Map extends Component {
 
         return {
             update: () => { },
-            destroy: () => {
-                map.remove();
-                this.maps = this.maps.filter(_ => _ !== map);
-            }
+            destroy: () =>
+                map.remove()
         }
     }
+}
 
-    async load() {
-        const check = async (map: mapbox.Map) => {
-            if (map.loaded())
-                return true;
-            await delay(50);
-            await check(map);
-        };
-        await Promise.all(this.maps.map(_ => check(_)));
-    }
+function boundsWithPitch(map: mapbox.Map): mapbox.LngLatBounds {
+    // getBounds() is broken with a .pitch unfortunately
+    const canvas = map.getCanvas();
+    const rect = canvas.getBoundingClientRect();
+    return [
+        [rect.left, rect.top],
+        [rect.left, rect.bottom],
+        [rect.right, rect.bottom],
+        [rect.right, rect.top]
+    ]
+        .map(_ => map.unproject(_))
+        .reduce(
+            (bounds, point) => bounds.extend(point),
+            new mapbox.LngLatBounds());
 }
 
 function style(map: mapbox.Map) {
