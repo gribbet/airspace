@@ -62,11 +62,10 @@ function convert(features: Features): Features {
                     "type": "Polygon",
                     "coordinates": range(0, 100)
                         .map(i => i / 100 * 2 * Math.PI)
-                        .map(bearing => move({
-                            lng: geometry.center[0],
-                            lat: geometry.center[1]
-                        }, geometry.radius, bearing))
-                        .map(_ => [_.lng, _.lat])
+                        .map(bearing => move(
+                            geometry.center,
+                            geometry.radius,
+                            bearing))
                 },
                 "properties": feature.properties
             } as GeoJSON.Feature<any>;
