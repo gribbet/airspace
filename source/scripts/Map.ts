@@ -31,9 +31,10 @@ export default class Map extends Component {
 
         const updateShape = () => {
             const source = map.getSource("shape") as mapbox.GeoJSONSource;
-            const shape = this.shape.slice();
-            if (this.shape.length > 0)
-                shape.concat(this.shape[0]);
+            let shape = this.shape.slice();
+            if (shape.length > 0)
+                shape = shape.concat([this.shape[0]]);
+            console.log(shape);
             source.setData({
                 "type": "Feature",
                 "properties": {},
