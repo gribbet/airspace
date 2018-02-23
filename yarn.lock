@@ -62,9 +62,9 @@
   dependencies:
     "@types/geojson" "*"
 
-"@types/route-parser@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@types/route-parser/-/route-parser-0.1.1.tgz#24b69588c68249f695122c230e547d3d6c8be095"
+"@types/query-string@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@types/query-string/-/query-string-5.1.0.tgz#7f40cdea49ddafa0ea4f3db35fb6c24d3bfd4dcc"
 
 "JSV@>= 4.0.x":
   version "4.0.2"
@@ -4402,6 +4402,14 @@ query-string@^4.1.0:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/query-string/-/query-string-4.3.4.tgz#bbb693b9ca915c232515b228b1a02b609043dbeb"
   dependencies:
+    object-assign "^4.1.0"
+    strict-uri-encode "^1.0.0"
+
+query-string@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/query-string/-/query-string-5.1.0.tgz#9583b15fd1307f899e973ed418886426a9976469"
+  dependencies:
+    decode-uri-component "^0.2.0"
     object-assign "^4.1.0"
     strict-uri-encode "^1.0.0"
 
