@@ -45,14 +45,9 @@ function convert(features: Features): Features {
     features.features = features.features.map(feature => {
 
         const geometry = feature.geometry;
-        const properties = feature.properties;
 
-        if (!geometry || !properties)
+        if (!geometry)
             return feature;
-
-        // Question: Why aren't these properties numeric?
-        properties.ceiling = parseInt(properties.ceiling) || 0;
-        properties.floor = parseInt(properties.floor) || 0;
 
         // Question: Hmmm... that's not GeoJSON
         if (geometry.type === "Circle")

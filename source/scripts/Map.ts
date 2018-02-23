@@ -105,6 +105,13 @@ function style(map: mapbox.Map) {
         }
     });
 
+    const base = ["to-number", ["get", "floor"], 0];
+    const height = [
+        "-",
+        ["to-number", ["get", "ceiling"], 0],
+        base
+    ];
+
     map.addLayer({
         "id": "airspaces-extrusion-laanc",
         "source": "airspaces",
@@ -112,8 +119,8 @@ function style(map: mapbox.Map) {
         "filter": ["==", ["get", "layer"], "YELLOW.USA.FAA_LAANC"],
         "paint": {
             "fill-extrusion-color": "#eeee77",
-            "fill-extrusion-height": ["-", ["get", "ceiling"], ["get", "floor"]],
-            "fill-extrusion-base": ["get", "floor"],
+            "fill-extrusion-height": height,
+            "fill-extrusion-base": base,
             "fill-extrusion-opacity": 0.6
         }
     });
@@ -124,8 +131,8 @@ function style(map: mapbox.Map) {
         "filter": ["==", ["get", "layer"], "RED.USA"],
         "paint": {
             "fill-extrusion-color": "#ee3333",
-            "fill-extrusion-height": ["-", ["get", "ceiling"], ["get", "floor"]],
-            "fill-extrusion-base": ["get", "floor"],
+            "fill-extrusion-height": height,
+            "fill-extrusion-base": base,
             "fill-extrusion-opacity": 0.6
         }
     });
@@ -138,8 +145,8 @@ function style(map: mapbox.Map) {
             ["!=", ["get", "layer"], "RED.USA"]],
         "paint": {
             "fill-extrusion-color": "#aaa",
-            "fill-extrusion-height": ["-", ["get", "ceiling"], ["get", "floor"]],
-            "fill-extrusion-base": ["get", "floor"],
+            "fill-extrusion-height": height,
+            "fill-extrusion-base": base,
             "fill-extrusion-opacity": 0.33
         }
     });
