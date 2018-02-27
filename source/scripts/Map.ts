@@ -1,7 +1,7 @@
 import * as mapbox from "mapbox-gl";
 import Component from "wedges/lib/Component";
 
-import { airspaceService, validationService } from ".";
+import { airspaceService, flightValidationService } from ".";
 
 
 export default class Map extends Component {
@@ -78,7 +78,23 @@ function createMap(element: Element): mapbox.Map {
 
         const source = map.getSource("airspaces") as mapbox.GeoJSONSource;
         source.setData(airspaces);
-    };
+    }
+
+    function updateShape() {
+        const source = map.getSource("shape") as mapbox.GeoJSONSource;
+        source.setData(shape());
+    }
+
+    async function updateInvalid() {
+
+        const invalid = await flightValidationService.invalidAirspaces(shape());
+
+        const source = map.getSource("invalid") as mapbox.GeoJSONSource;
+        source.setData({
+            "type": "FeatureCollection",
+            "features": invalid
+        });
+    }
 
     function shape(): GeoJSON.Feature<GeoJSON.Polygon, { height: number }> {
         return {
@@ -94,22 +110,6 @@ function createMap(element: Element): mapbox.Map {
                         : [vertices.concat([vertices[0]])]
             }
         };
-    }
-
-    function updateShape() {
-        const source = map.getSource("shape") as mapbox.GeoJSONSource;
-        source.setData(shape());
-    }
-
-    async function updateInvalid() {
-
-        const invalid = await validationService.invalid(shape());
-
-        const source = map.getSource("invalid") as mapbox.GeoJSONSource;
-        source.setData({
-            "type": "FeatureCollection",
-            "features": invalid
-        });
     }
 
     // map.getBounds() is broken with a .pitch unfortunately
@@ -160,11 +160,11 @@ function createMap(element: Element): mapbox.Map {
             }
         });
 
-        const factor = 2;
-        const base = ["*", factor, ["to-number", ["get", "floor"], 0]];
+        const heightFactor = 3;
+        const base = ["*", heightFactor, ["to-number", ["get", "floor"], 0]];
         const height = [
             "-",
-            ["*", factor, ["to-number", ["get", "ceiling"], 0]],
+            ["*", heightFactor, ["to-number", ["get", "ceiling"], 0]],
             base
         ];
         map.addLayer({
@@ -175,17 +175,6 @@ function createMap(element: Element): mapbox.Map {
             "paint": {
                 "fill-extrusion-color": "#eeee77",
                 "fill-extrusion-height": height,
-                "fill-extrusion-base": base,
-                "fill-extrusion-opacity": 0.6
-            }
-        });
-        map.addLayer({
-            "id": "invalid-extrusion",
-            "source": "invalid",
-            "type": "fill-extrusion",
-            "paint": {
-                "fill-extrusion-color": "#ff0000",
-                "fill-extrusion-height": ["+", 10, height],
                 "fill-extrusion-base": base,
                 "fill-extrusion-opacity": 0.6
             }
@@ -211,6 +200,17 @@ function createMap(element: Element): mapbox.Map {
             }
         });
         map.addLayer({
+            "id": "invalid-extrusion",
+            "source": "invalid",
+            "type": "fill-extrusion",
+            "paint": {
+                "fill-extrusion-color": "#ff0000",
+                "fill-extrusion-height": ["+", 10, height], // Add an offset to improve rendering
+                "fill-extrusion-base": base,
+                "fill-extrusion-opacity": 0.6
+            }
+        });
+        map.addLayer({
             "id": "shape-outline",
             "source": "shape",
             "type": "line",
@@ -226,7 +226,7 @@ function createMap(element: Element): mapbox.Map {
             "type": "fill-extrusion",
             "paint": {
                 "fill-extrusion-color": "#3333ee",
-                "fill-extrusion-height": ["*", factor, ["get", "height"]],
+                "fill-extrusion-height": ["*", heightFactor, ["get", "height"]],
                 "fill-extrusion-opacity": 0.2
             }
         });

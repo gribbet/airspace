@@ -16,7 +16,8 @@ export default class AirspaceService {
         north: number
     ): Promise<Features> {
 
-        const url = "https://sureflight.skyward.io/api/0.6.0/airspace/rect"
+        const url = "https://sureflight.skyward.io/api/0.6.0/airspace/rect";
+        const key = "add06589-27e2-4668-a1d7-e61181978345";
 
         const query = QueryString.stringify({
             xMin: west,
@@ -29,9 +30,10 @@ export default class AirspaceService {
         const response = await fetch(
             `${url}?${query}`, {
                 headers: new Headers({
-                    "Authorization": "add06589-27e2-4668-a1d7-e61181978345"
+                    "Authorization": key
                 })
             });
+
         const features = await response.json() as Features;
 
         return convert(features);

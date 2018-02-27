@@ -1,15 +1,13 @@
 /// <reference types="geojson" />
 import bbox from "@turf/bbox";
-import difference from "@turf/difference";
-import { polygon } from "@turf/helpers";
-import unkink from "@turf/unkink-polygon";
 
 import { airspaceService } from ".";
+import { intersection } from "./geometry";
 
 
-export default class AuthorizationService {
+export default class FlightValidationService {
 
-    async invalid(
+    async invalidAirspaces(
         shape: GeoJSON.Feature<any, { height: number }>,
     ): Promise<GeoJSON.Feature<any>[]> {
 
@@ -31,24 +29,4 @@ export default class AuthorizationService {
             .map(_ => intersection(_, shape))
             .filter(_ => _ !== null) as GeoJSON.Feature<GeoJSON.GeometryObject>[];
     }
-}
-
-// Hack since turf intersection is broken
-function intersection(
-    a: GeoJSON.Feature<any>,
-    b: GeoJSON.Feature<any>
-): GeoJSON.Feature<any> | null {
-
-    const universe = polygon([[
-        [-180, -90],
-        [-180, 90],
-        [180, 90],
-        [180, -90],
-        [-180, -90]
-    ]]);
-    const inverse = unkink(b).features
-        .reduce((inverse, b) =>
-            difference(inverse, b) as GeoJSON.Feature<any>,
-            universe);
-    return difference(a, inverse);
 }
