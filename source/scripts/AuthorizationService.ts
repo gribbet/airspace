@@ -16,8 +16,8 @@ export default class AuthorizationService {
 
         const airspaces = await airspaceService.airspaces(
             bounds[0],
-            bounds[1],
             bounds[2],
+            bounds[1],
             bounds[3]);
 
         const laanc = airspaces.features
