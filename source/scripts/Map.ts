@@ -81,7 +81,10 @@ function createMap(element: Element): mapbox.Map {
             }
         };
 
-        invalidIds = await authorizationService.authorize(shape);
+        if (vertices.length !== 0)
+            invalidIds = await authorizationService.authorize(shape);
+        else
+            invalidIds = []
 
         updateAirspaces();
 
