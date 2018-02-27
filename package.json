@@ -30,6 +30,7 @@
   "dependencies": {
     "@turf/bbox": "^6.0.0",
     "@turf/difference": "^5.1.5",
+    "@turf/unkink-polygon": "^5.1.5",
     "mapbox-gl": "^0.44.0",
     "query-string": "^5.1.0",
     "wedges": "https://github.com/gribbet/wedges"

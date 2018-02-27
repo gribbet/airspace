@@ -37,7 +37,12 @@ function createMap(element: Element): mapbox.Map {
             if (!drawing)
                 return;
             const position = event.lngLat;
-            vertices.push([position.lng, position.lat]);
+            const last = vertices.length > 0 ? vertices[0] : null;
+            if (last !== null
+                && last[0] === position.lng
+                && last[1] === position.lat)
+                return;
+            vertices.unshift([position.lng, position.lat]);
             updateShape();
         });
         map.on("click", () => {
