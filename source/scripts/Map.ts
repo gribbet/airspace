@@ -145,19 +145,6 @@ function createMap(element: Element): mapbox.Map {
             ["*", factor, ["to-number", ["get", "ceiling"], 0]],
             base
         ];
-
-        map.addLayer({
-            "id": "invalid-extrusion",
-            "source": "invalid",
-            "type": "fill-extrusion",
-            "paint": {
-                "fill-extrusion-color": "#ff0000",
-                "fill-extrusion-height": height,
-                "fill-extrusion-base": base,
-                "fill-extrusion-opacity": 0.6
-            }
-        });
-
         map.addLayer({
             "id": "airspaces-extrusion-laanc",
             "source": "airspaces",
@@ -165,6 +152,17 @@ function createMap(element: Element): mapbox.Map {
             "filter": ["==", ["get", "layer"], "YELLOW.USA.FAA_LAANC"],
             "paint": {
                 "fill-extrusion-color": "#eeee77",
+                "fill-extrusion-height": height,
+                "fill-extrusion-base": base,
+                "fill-extrusion-opacity": 0.6
+            }
+        });
+        map.addLayer({
+            "id": "invalid-extrusion",
+            "source": "invalid",
+            "type": "fill-extrusion",
+            "paint": {
+                "fill-extrusion-color": "#ff0000",
                 "fill-extrusion-height": height,
                 "fill-extrusion-base": base,
                 "fill-extrusion-opacity": 0.6
@@ -184,20 +182,10 @@ function createMap(element: Element): mapbox.Map {
             "source": "airspaces",
             "type": "symbol",
             "filter": ["==", ["get", "layer"], "YELLOW.USA.FAA_LAANC"],
+            "minzoom": 9,
             "layout": {
                 "text-field": "{ceiling}",
                 "text-size": 12,
-            }
-        });
-
-        map.addLayer({
-            "id": "shape-extrusion",
-            "source": "shape",
-            "type": "fill-extrusion",
-            "paint": {
-                "fill-extrusion-color": "#3333ee",
-                "fill-extrusion-height": ["*", factor, ["get", "height"]],
-                "fill-extrusion-opacity": 0.2
             }
         });
         map.addLayer({
@@ -210,7 +198,6 @@ function createMap(element: Element): mapbox.Map {
                 "line-color": "#3333ee"
             }
         });
-
         map.addLayer({
             "id": "airspaces-extrusion-other",
             "source": "airspaces",
