@@ -31,14 +31,21 @@ function createMap(element: Element): mapbox.Map {
 
     map.on("load", () => {
         style();
+        let drawing = false;
         map.on("moveend", updateAirspaces);
-        map.on("click", (event: any) => {
+        map.on("mousemove", (event: any) => {
+            if (!drawing)
+                return;
             const position = event.lngLat;
             vertices.push([position.lng, position.lat]);
             updateShape();
         });
-        map.on("contextmenu", () => {
-            vertices = [];
+        map.on("click", () => {
+            drawing = !drawing;
+            if (drawing)
+                vertices = [];
+            else
+                updateInvalid();
             updateShape();
         });
         updateAirspaces();
@@ -73,9 +80,7 @@ function createMap(element: Element): mapbox.Map {
         };
     }
 
-    async function updateShape() {
-
-        await updateInvalid();
+    function updateShape() {
 
         const source = map.getSource("shape") as mapbox.GeoJSONSource;
         source.setData(shape());
@@ -92,8 +97,9 @@ function createMap(element: Element): mapbox.Map {
         });
     }
 
+    // map.getBounds() is broken with a .pitch unfortunately
     function boundsWithPitch(): mapbox.LngLatBounds {
-        // map.getBounds() is broken with a .pitch unfortunately
+
         const canvas = map.getCanvas();
         const rect = canvas.getBoundingClientRect();
         return [
@@ -109,6 +115,7 @@ function createMap(element: Element): mapbox.Map {
     }
 
     function style() {
+
         map.addSource("airspaces", {
             "type": "geojson",
             "data": {
@@ -163,7 +170,7 @@ function createMap(element: Element): mapbox.Map {
             "type": "fill-extrusion",
             "paint": {
                 "fill-extrusion-color": "#ff0000",
-                "fill-extrusion-height": height,
+                "fill-extrusion-height": ["+", 10, height],
                 "fill-extrusion-base": base,
                 "fill-extrusion-opacity": 0.6
             }
