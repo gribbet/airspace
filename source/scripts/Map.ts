@@ -109,10 +109,11 @@ function createMap(element: Element): mapbox.Map {
             }
         });
 
-        const base = ["to-number", ["get", "floor"], 0];
+        const factor = 2;
+        const base = ["*", factor, ["to-number", ["get", "floor"], 0]];
         const height = [
             "-",
-            ["to-number", ["get", "ceiling"], 0],
+            ["*", factor, ["to-number", ["get", "ceiling"], 0]],
             base
         ];
 
