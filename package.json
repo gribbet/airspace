@@ -28,6 +28,8 @@
     "clean": "rm -rf build"
   },
   "dependencies": {
+    "@turf/bbox": "^6.0.0",
+    "@turf/boolean-intersects": "^6.0.0",
     "mapbox-gl": "^0.44.0",
     "query-string": "^5.1.0",
     "wedges": "https://github.com/gribbet/wedges"

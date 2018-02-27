@@ -12,12 +12,11 @@ module.exports = (env = {}) => ({
         publicPath: "/"
     },
     resolve: {
-        extensions: [".ts", ".js", ".pug", ".pcss"]
+        extensions: [".js", ".ts", ".pug", ".pcss"]
     },
     module: {
         loaders: [{
             test: /\.ts$/,
-            exclude: /node_modules/,
             loader: "ts-loader"
         }, {
             test: /\.pcss$/,

@@ -42,6 +42,151 @@
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@mapbox/whoots-js/-/whoots-js-3.0.0.tgz#c1de4293081424da3ac30c23afa850af1019bb54"
 
+"@turf/area@^5.1.5":
+  version "5.1.5"
+  resolved "https://registry.yarnpkg.com/@turf/area/-/area-5.1.5.tgz#efd899bfd260cdbd1541b2a3c155f8a5d2eefa1d"
+  dependencies:
+    "@turf/helpers" "^5.1.5"
+    "@turf/meta" "^5.1.5"
+
+"@turf/bbox@*", "@turf/bbox@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@turf/bbox/-/bbox-6.0.0.tgz#590c68239a284ba0a0e4ecb01ffe10d8fe264d08"
+  dependencies:
+    "@turf/helpers" "6.x"
+    "@turf/meta" "6.x"
+
+"@turf/boolean-disjoint@6.x":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@turf/boolean-disjoint/-/boolean-disjoint-6.0.0.tgz#09d0b846438ccd87525310702b4497cd7ef4ade7"
+  dependencies:
+    "@turf/boolean-point-in-polygon" "6.0.0"
+    "@turf/helpers" "6.x"
+    "@turf/line-intersect" "6.x"
+    "@turf/meta" "6.x"
+    "@turf/polygon-to-line" "6.x"
+
+"@turf/boolean-intersects@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@turf/boolean-intersects/-/boolean-intersects-6.0.0.tgz#2bc1c30a642884e6163096a8cd8f9c16a17031e3"
+  dependencies:
+    "@turf/boolean-disjoint" "6.x"
+    "@turf/helpers" "6.x"
+    "@turf/meta" "6.x"
+
+"@turf/boolean-point-in-polygon@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@turf/boolean-point-in-polygon/-/boolean-point-in-polygon-6.0.0.tgz#3ddb1b8f23e52802e1df9cf04e2d29b859fb5718"
+  dependencies:
+    "@turf/helpers" "6.x"
+    "@turf/invariant" "6.x"
+
+"@turf/clean-coords@^5.1.5":
+  version "5.1.5"
+  resolved "https://registry.yarnpkg.com/@turf/clean-coords/-/clean-coords-5.1.5.tgz#12800a98a78c9a452a72ec428493c43acf2ada1f"
+  dependencies:
+    "@turf/helpers" "^5.1.5"
+    "@turf/invariant" "^5.1.5"
+
+"@turf/clone@^5.1.5":
+  version "5.1.5"
+  resolved "https://registry.yarnpkg.com/@turf/clone/-/clone-5.1.5.tgz#253e8d35477181976e33adfab50a0f02a7f0e367"
+  dependencies:
+    "@turf/helpers" "^5.1.5"
+
+"@turf/difference@^5.1.5":
+  version "5.1.5"
+  resolved "https://registry.yarnpkg.com/@turf/difference/-/difference-5.1.5.tgz#a24d690a7bca803f1090a9ee3b9d906fc4371f42"
+  dependencies:
+    "@turf/area" "^5.1.5"
+    "@turf/helpers" "^5.1.5"
+    "@turf/invariant" "^5.1.5"
+    "@turf/meta" "^5.1.5"
+    turf-jsts "*"
+
+"@turf/helpers@6.x", "@turf/helpers@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@turf/helpers/-/helpers-6.0.1.tgz#625112616159e519033dc5d24c094ccbce7a457f"
+
+"@turf/helpers@^5.1.5":
+  version "5.1.5"
+  resolved "https://registry.yarnpkg.com/@turf/helpers/-/helpers-5.1.5.tgz#153405227ab933d004a5bb9641a9ed999fcbe0cf"
+
+"@turf/intersect@^5.1.6":
+  version "5.1.6"
+  resolved "https://registry.yarnpkg.com/@turf/intersect/-/intersect-5.1.6.tgz#13ffcceb7a529c2a7e5d6681ab3ba671f868e95f"
+  dependencies:
+    "@turf/clean-coords" "^5.1.5"
+    "@turf/helpers" "^5.1.5"
+    "@turf/invariant" "^5.1.5"
+    "@turf/truncate" "^5.1.5"
+    turf-jsts "*"
+
+"@turf/invariant@6.x":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@turf/invariant/-/invariant-6.0.1.tgz#45581b41f82d91b682cef427e897c840d1741757"
+  dependencies:
+    "@turf/helpers" "6.x"
+
+"@turf/invariant@^5.1.5":
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@turf/invariant/-/invariant-5.2.0.tgz#f0150ff7290b38577b73d088b7932c1ee0aa90a7"
+  dependencies:
+    "@turf/helpers" "^5.1.5"
+
+"@turf/line-intersect@6.x":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@turf/line-intersect/-/line-intersect-6.0.0.tgz#90e7d718c98ef58211acc20fe35c779862717bc8"
+  dependencies:
+    "@turf/helpers" "6.x"
+    "@turf/invariant" "6.x"
+    "@turf/line-segment" "6.x"
+    "@turf/meta" "6.x"
+    geojson-rbush "3.x"
+
+"@turf/line-segment@6.x":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@turf/line-segment/-/line-segment-6.0.0.tgz#d06d4c4d5773df7bd930ca92ab68ed3873bc48e7"
+  dependencies:
+    "@turf/helpers" "6.x"
+    "@turf/invariant" "6.x"
+    "@turf/meta" "6.x"
+
+"@turf/meta@6.x":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@turf/meta/-/meta-6.0.1.tgz#cf6f3f2263a3d24fc8d6a7e90f0420bbc44c090d"
+  dependencies:
+    "@turf/helpers" "6.x"
+
+"@turf/meta@^5.1.5":
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@turf/meta/-/meta-5.2.0.tgz#3b1ad485ee0c3b0b1775132a32c384d53e4ba53d"
+  dependencies:
+    "@turf/helpers" "^5.1.5"
+
+"@turf/polygon-to-line@6.x":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@turf/polygon-to-line/-/polygon-to-line-6.0.1.tgz#573f0cbf359cc9b562c57b0591e8ca148e432692"
+  dependencies:
+    "@turf/helpers" "6.x"
+    "@turf/invariant" "6.x"
+
+"@turf/simplify@^5.1.5":
+  version "5.1.5"
+  resolved "https://registry.yarnpkg.com/@turf/simplify/-/simplify-5.1.5.tgz#0ac8f27a2eb4218183edd9998c3275abe408b926"
+  dependencies:
+    "@turf/clean-coords" "^5.1.5"
+    "@turf/clone" "^5.1.5"
+    "@turf/helpers" "^5.1.5"
+    "@turf/meta" "^5.1.5"
+
+"@turf/truncate@^5.1.5":
+  version "5.1.5"
+  resolved "https://registry.yarnpkg.com/@turf/truncate/-/truncate-5.1.5.tgz#9eedfb3b18ba81f2c98d3ead09431cca1884ad89"
+  dependencies:
+    "@turf/helpers" "^5.1.5"
+    "@turf/meta" "^5.1.5"
+
 "@types/babel-types@*", "@types/babel-types@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@types/babel-types/-/babel-types-7.0.0.tgz#4beb190e239fe05bac5e57e8d8376cab4f20c65c"
@@ -2012,6 +2157,15 @@ gauge@~2.7.3:
     string-width "^1.0.1"
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
+
+geojson-rbush@3.x:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/geojson-rbush/-/geojson-rbush-3.1.1.tgz#dd40bdd26e92813d888d7b489e8d2980695a49b4"
+  dependencies:
+    "@turf/bbox" "*"
+    "@turf/helpers" "6.x"
+    "@turf/meta" "6.x"
+    rbush "*"
 
 geojson-rewind@^0.3.0:
   version "0.3.0"
@@ -4429,7 +4583,7 @@ querystringify@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-1.0.0.tgz#6286242112c5b712fa654e526652bf6a13ff05cb"
 
-quickselect@^1.0.0:
+quickselect@^1.0.0, quickselect@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/quickselect/-/quickselect-1.0.1.tgz#1e6ceaa9db1ca7c75aafcc863c7bef2037ca62a1"
 
@@ -4473,6 +4627,12 @@ raw-body@2.3.2:
     http-errors "1.6.2"
     iconv-lite "0.4.19"
     unpipe "1.0.0"
+
+rbush@*:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/rbush/-/rbush-2.0.2.tgz#bb6005c2731b7ba1d5a9a035772927d16a614605"
+  dependencies:
+    quickselect "^1.0.1"
 
 rc@^1.1.7:
   version "1.2.5"
@@ -5401,6 +5561,10 @@ tunnel-agent@^0.6.0:
   resolved "https://registry.yarnpkg.com/tunnel-agent/-/tunnel-agent-0.6.0.tgz#27a5dea06b36b04a0a9966774b290868f0fc40fd"
   dependencies:
     safe-buffer "^5.0.1"
+
+turf-jsts@*:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/turf-jsts/-/turf-jsts-1.2.3.tgz#59757f542afbff9a577bbf411f183b8f48d38aa4"
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"

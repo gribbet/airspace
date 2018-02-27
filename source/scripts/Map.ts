@@ -1,7 +1,7 @@
 import * as mapbox from "mapbox-gl";
 import Component from "wedges/lib/Component";
 
-import { airspaceService } from ".";
+import { airspaceService, authorizationService } from ".";
 
 export default class Map extends Component {
 
@@ -18,7 +18,9 @@ export default class Map extends Component {
 
 function createMap(element: Element): mapbox.Map {
 
-    let shape: [number, number][] = [];
+    let height: number = 280;
+    let vertices: [number, number][] = [];
+    let invalidIds: number[] = [];
 
     const map = new mapbox.Map({
         container: element,
@@ -33,11 +35,11 @@ function createMap(element: Element): mapbox.Map {
         map.on("moveend", updateAirspaces);
         map.on("click", (event: any) => {
             const position = event.lngLat;
-            shape.push([position.lng, position.lat]);
+            vertices.push([position.lng, position.lat]);
             updateShape();
         });
         map.on("contextmenu", () => {
-            shape = [];
+            vertices = [];
             updateShape();
         });
         updateAirspaces();
@@ -52,24 +54,39 @@ function createMap(element: Element): mapbox.Map {
             bounds.getSouth(),
             bounds.getNorth());
 
-        const source = map.getSource("airspaces") as mapbox.GeoJSONSource;
+        airspaces.features.forEach(_ => {
+            const properties = (_.properties || {});
+            const featureId = properties.featureId;
 
+            properties.invalid = invalidIds.indexOf(featureId) !== -1;
+        });
+
+        const source = map.getSource("airspaces") as mapbox.GeoJSONSource;
         source.setData(airspaces);
     };
 
-    function updateShape() {
-        const source = map.getSource("shape") as mapbox.GeoJSONSource;
-        let vertices = shape.slice();
-        if (vertices.length > 0)
-            vertices = vertices.concat([shape[0]]);
-        source.setData({
+    async function updateShape() {
+
+        const shape: GeoJSON.Feature<GeoJSON.Polygon, { height: number }> = {
             "type": "Feature",
-            "properties": {},
+            "properties": {
+                "height": height
+            },
             "geometry": {
                 "type": "Polygon",
-                "coordinates": [vertices]
+                "coordinates":
+                    vertices.length === 0
+                        ? []
+                        : [vertices.concat([vertices[0]])]
             }
-        });
+        };
+
+        invalidIds = await authorizationService.authorize(shape);
+
+        updateAirspaces();
+
+        const source = map.getSource("shape") as mapbox.GeoJSONSource;
+        source.setData(shape);
     }
 
     function boundsWithPitch(): mapbox.LngLatBounds {
@@ -100,7 +117,9 @@ function createMap(element: Element): mapbox.Map {
             "type": "geojson",
             "data": {
                 "type": "Feature",
-                "properties": {},
+                "properties": {
+                    "height": 0
+                },
                 "geometry": {
                     "type": "Polygon",
                     "coordinates": [[[
@@ -123,7 +142,11 @@ function createMap(element: Element): mapbox.Map {
             "type": "fill-extrusion",
             "filter": ["==", ["get", "layer"], "YELLOW.USA.FAA_LAANC"],
             "paint": {
-                "fill-extrusion-color": "#eeee77",
+                "fill-extrusion-color": [
+                    "case",
+                    ["get", "invalid"], "#ff0000",
+                    "#eeee77"
+                ],
                 "fill-extrusion-height": height,
                 "fill-extrusion-base": base,
                 "fill-extrusion-opacity": 0.6
@@ -166,9 +189,9 @@ function createMap(element: Element): mapbox.Map {
             "source": "shape",
             "type": "fill-extrusion",
             "paint": {
-                "fill-extrusion-color": "#33ee33",
-                "fill-extrusion-height": 280,
-                "fill-extrusion-opacity": 0.8
+                "fill-extrusion-color": "#3333ee",
+                "fill-extrusion-height": ["*", factor, ["get", "height"]],
+                "fill-extrusion-opacity": 0.2
             }
         });
         map.addLayer({
@@ -178,7 +201,7 @@ function createMap(element: Element): mapbox.Map {
             "paint": {
                 "line-width": 5,
                 "line-opacity": 0.25,
-                "line-color": "#33ee33"
+                "line-color": "#3333ee"
             }
         });
 
