@@ -20,7 +20,6 @@ function createMap(element: Element): mapbox.Map {
 
     let height: number = 280;
     let vertices: [number, number][] = [];
-    let invalidIds: number[] = [];
 
     const map = new mapbox.Map({
         container: element,
@@ -54,20 +53,12 @@ function createMap(element: Element): mapbox.Map {
             bounds.getSouth(),
             bounds.getNorth());
 
-        airspaces.features.forEach(_ => {
-            const properties = (_.properties || {});
-            const featureId = properties.featureId;
-
-            properties.invalid = invalidIds.indexOf(featureId) !== -1;
-        });
-
         const source = map.getSource("airspaces") as mapbox.GeoJSONSource;
         source.setData(airspaces);
     };
 
-    async function updateShape() {
-
-        const shape: GeoJSON.Feature<GeoJSON.Polygon, { height: number }> = {
+    function shape(): GeoJSON.Feature<GeoJSON.Polygon, { height: number }> {
+        return {
             "type": "Feature",
             "properties": {
                 "height": height
@@ -80,16 +71,25 @@ function createMap(element: Element): mapbox.Map {
                         : [vertices.concat([vertices[0]])]
             }
         };
+    }
 
-        if (vertices.length !== 0)
-            invalidIds = await authorizationService.authorize(shape);
-        else
-            invalidIds = []
+    async function updateShape() {
 
-        updateAirspaces();
+        await updateInvalid();
 
         const source = map.getSource("shape") as mapbox.GeoJSONSource;
-        source.setData(shape);
+        source.setData(shape());
+    }
+
+    async function updateInvalid() {
+
+        const invalid = await authorizationService.invalid(shape());
+
+        const source = map.getSource("invalid") as mapbox.GeoJSONSource;
+        source.setData({
+            "type": "FeatureCollection",
+            "features": invalid
+        });
     }
 
     function boundsWithPitch(): mapbox.LngLatBounds {
@@ -110,6 +110,13 @@ function createMap(element: Element): mapbox.Map {
 
     function style() {
         map.addSource("airspaces", {
+            "type": "geojson",
+            "data": {
+                "type": "FeatureCollection",
+                "features": []
+            }
+        });
+        map.addSource("invalid", {
             "type": "geojson",
             "data": {
                 "type": "FeatureCollection",
@@ -140,28 +147,24 @@ function createMap(element: Element): mapbox.Map {
         ];
 
         map.addLayer({
-            "id": "airspaces-extrusion-laanc",
-            "source": "airspaces",
+            "id": "invalid-extrusion",
+            "source": "invalid",
             "type": "fill-extrusion",
-            "filter": ["==", ["get", "layer"], "YELLOW.USA.FAA_LAANC"],
             "paint": {
-                "fill-extrusion-color": [
-                    "case",
-                    ["get", "invalid"], "#ff0000",
-                    "#eeee77"
-                ],
+                "fill-extrusion-color": "#ff0000",
                 "fill-extrusion-height": height,
                 "fill-extrusion-base": base,
                 "fill-extrusion-opacity": 0.6
             }
         });
+
         map.addLayer({
-            "id": "airspaces-extrusion-red",
+            "id": "airspaces-extrusion-laanc",
             "source": "airspaces",
             "type": "fill-extrusion",
-            "filter": ["==", ["get", "layer"], "RED.USA"],
+            "filter": ["==", ["get", "layer"], "YELLOW.USA.FAA_LAANC"],
             "paint": {
-                "fill-extrusion-color": "#ee3333",
+                "fill-extrusion-color": "#eeee77",
                 "fill-extrusion-height": height,
                 "fill-extrusion-base": base,
                 "fill-extrusion-opacity": 0.6
@@ -212,9 +215,7 @@ function createMap(element: Element): mapbox.Map {
             "id": "airspaces-extrusion-other",
             "source": "airspaces",
             "type": "fill-extrusion",
-            "filter": ["all",
-                ["!=", ["get", "layer"], "YELLOW.USA.FAA_LAANC"],
-                ["!=", ["get", "layer"], "RED.USA"]],
+            "filter": ["!=", ["get", "layer"], "YELLOW.USA.FAA_LAANC"],
             "paint": {
                 "fill-extrusion-color": "#aaa",
                 "fill-extrusion-height": height,
