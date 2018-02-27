@@ -33,7 +33,7 @@
   },
   "scripts": {
     "build": "yarn clean && webpack -p --env.production",
-    "start": "webpack-dev-server --history-api-fallback --host 0.0.0.0",
+    "start": "webpack-dev-server --history-api-fallback --host 0.0.0.0 --open",
     "clean": "rm -rf build",
     "test": "yarn build && mocha --timeout 10000 --require ts-node/register 'test/**/*.ts'"
   },
