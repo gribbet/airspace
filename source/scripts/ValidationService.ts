@@ -1,9 +1,11 @@
+/// <reference types="geojson" />
 import bbox from "@turf/bbox";
 import difference from "@turf/difference";
 import { polygon } from "@turf/helpers";
 import unkink from "@turf/unkink-polygon";
 
 import { airspaceService } from ".";
+
 
 export default class AuthorizationService {
 

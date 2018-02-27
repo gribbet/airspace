@@ -7,8 +7,6 @@ import { move } from "./mapping";
 
 type Features = GeoJSON.FeatureCollection<any>;
 
-declare var require: (path: string) => any;
-
 export default class AirspaceService {
 
     async airspaces(

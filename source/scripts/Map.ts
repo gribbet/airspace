@@ -1,7 +1,8 @@
 import * as mapbox from "mapbox-gl";
 import Component from "wedges/lib/Component";
 
-import { airspaceService, authorizationService } from ".";
+import { airspaceService, validationService } from ".";
+
 
 export default class Map extends Component {
 
@@ -20,6 +21,7 @@ function createMap(element: Element): mapbox.Map {
 
     let height: number = 280;
     let vertices: [number, number][] = [];
+    let drawing = false;
 
     const map = new mapbox.Map({
         container: element,
@@ -30,21 +32,29 @@ function createMap(element: Element): mapbox.Map {
     });
 
     map.on("load", () => {
+
         style();
-        let drawing = false;
+
         map.on("moveend", updateAirspaces);
+
         map.on("mousemove", (event: any) => {
+
             if (!drawing)
                 return;
+
             const position = event.lngLat;
+
             const last = vertices.length > 0 ? vertices[0] : null;
             if (last !== null
                 && last[0] === position.lng
                 && last[1] === position.lat)
                 return;
+
             vertices.unshift([position.lng, position.lat]);
+
             updateShape();
         });
+
         map.on("click", () => {
             drawing = !drawing;
             if (drawing)
@@ -52,10 +62,12 @@ function createMap(element: Element): mapbox.Map {
             else
                 updateInvalid();
         });
+
         updateAirspaces();
     });
 
     async function updateAirspaces() {
+
         const bounds = boundsWithPitch();
 
         const airspaces = await airspaceService.airspaces(
@@ -91,7 +103,7 @@ function createMap(element: Element): mapbox.Map {
 
     async function updateInvalid() {
 
-        const invalid = await authorizationService.invalid(shape());
+        const invalid = await validationService.invalid(shape());
 
         const source = map.getSource("invalid") as mapbox.GeoJSONSource;
         source.setData({

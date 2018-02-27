@@ -5,6 +5,7 @@ import Template from "wedges/lib/component/Template";
 
 import Map from "./Map";
 
+
 declare var require: (path: string) => string;
 
 export default class Airspace extends Container {
