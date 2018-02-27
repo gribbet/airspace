@@ -206,6 +206,16 @@ function createMap(element: Element): mapbox.Map {
             }
         });
         map.addLayer({
+            "id": "shape-extrusion",
+            "source": "shape",
+            "type": "fill-extrusion",
+            "paint": {
+                "fill-extrusion-color": "#3333ee",
+                "fill-extrusion-height": ["*", factor, ["get", "height"]],
+                "fill-extrusion-opacity": 0.2
+            }
+        });
+        map.addLayer({
             "id": "airspaces-extrusion-other",
             "source": "airspaces",
             "type": "fill-extrusion",
