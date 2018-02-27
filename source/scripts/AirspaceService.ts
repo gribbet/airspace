@@ -1,4 +1,6 @@
 /// <reference types="geojson" />
+import "isomorphic-fetch";
+
 import * as QueryString from "query-string";
 
 import { range } from "./common";

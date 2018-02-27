@@ -1,11 +1,17 @@
 /// <reference types="geojson" />
+import "isomorphic-fetch";
+
 import bbox from "@turf/bbox";
 
-import { airspaceService } from ".";
+import AirspaceService from "./AirspaceService";
 import { intersection } from "./geometry";
 
 
 export default class FlightValidationService {
+
+    constructor(
+        private airspaceService: AirspaceService
+    ) { }
 
     async invalidAirspaces(
         shape: GeoJSON.Feature<any, { height: number }>,
@@ -15,7 +21,7 @@ export default class FlightValidationService {
 
         const height = (shape.properties || { height: 0 }).height;
 
-        const airspaces = await airspaceService.airspaces(
+        const airspaces = await this.airspaceService.airspaces(
             bounds[0],
             bounds[2],
             bounds[1],

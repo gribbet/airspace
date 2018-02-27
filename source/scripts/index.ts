@@ -12,7 +12,8 @@ const mapboxToken = "pk.eyJ1IjoiZ3JhaGFtYWVyaWFsbGl2ZSIsImEiOiJjaXlnbjZlZmowM3dh
 
 export const airspaceService = new AirspaceService();
 
-export const flightValidationService = new FlightValidationService();
+export const flightValidationService =
+    new FlightValidationService(airspaceService);
 
 export const application = new Application(
     new AirspaceApp(),
