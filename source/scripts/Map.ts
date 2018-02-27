@@ -51,7 +51,6 @@ function createMap(element: Element): mapbox.Map {
                 vertices = [];
             else
                 updateInvalid();
-            updateShape();
         });
         updateAirspaces();
     });
@@ -86,7 +85,6 @@ function createMap(element: Element): mapbox.Map {
     }
 
     function updateShape() {
-
         const source = map.getSource("shape") as mapbox.GeoJSONSource;
         source.setData(shape());
     }
