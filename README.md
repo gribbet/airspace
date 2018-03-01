@@ -9,3 +9,5 @@ To run locally:
 ```
 yarn && yarn start
 ```
+
+![Screenshot](https://raw.githubusercontent.com/gribbet/airspace/master/screenshot.png)
