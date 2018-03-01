@@ -13,6 +13,9 @@ export default class FlightValidationService {
         private airspaceService: AirspaceService
     ) { }
 
+    /**
+     * Query for conflicting LAANC airspace for a specific flight volume
+     */
     async invalidAirspaces(
         shape: GeoJSON.Feature<any, { height: number }>,
     ): Promise<GeoJSON.Feature<any>[]> {

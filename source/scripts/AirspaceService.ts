@@ -11,6 +11,10 @@ type Features = GeoJSON.FeatureCollection<any>;
 
 export default class AirspaceService {
 
+    /** 
+     * Query airspace GeoJSON features for a specific region using the Skyward
+     * Airspace API 
+     */
     async airspaces(
         west: number,
         east: number,
@@ -20,6 +24,10 @@ export default class AirspaceService {
         return await airspaces(west, east, south, north);
     }
 
+    /** 
+     * Query LAANC airspace GeoJSON features for a specific region using the
+     * Skyward Airspace API 
+     */
     async laanc(
         west: number,
         east: number,

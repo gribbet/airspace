@@ -3,7 +3,7 @@ import { polygon } from "@turf/helpers";
 import unkink from "@turf/unkink-polygon";
 
 
-// Hack since turf intersection is broken
+// Hack since Turf intersection is broken
 export function intersection(
     a: GeoJSON.Feature<any>,
     b: GeoJSON.Feature<any>
