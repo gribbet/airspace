@@ -21,16 +21,13 @@ export default class FlightValidationService {
 
         const height = (shape.properties || { height: 0 }).height;
 
-        const airspaces = await this.airspaceService.airspaces(
+        const laanc = await this.airspaceService.laanc(
             bounds[0],
             bounds[2],
             bounds[1],
             bounds[3]);
 
-        const laanc = airspaces.features
-            .filter(_ => (_.properties || {}).layer === "YELLOW.USA.FAA_LAANC");
-
-        return laanc
+        return laanc.features
             .filter(_ => height > parseInt((_.properties || {}).ceiling) || 0)
             .map(_ => intersection(_, shape))
             .filter(_ => _ !== null) as GeoJSON.Feature<GeoJSON.GeometryObject>[];
